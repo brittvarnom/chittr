@@ -1,7 +1,7 @@
 openapi: 3.0.0
 
 info:
-  version: "0.0.3"
+  version: "0.0.4"
   title: 'Chittr Microblogging Platorm'
   description: 'Chittr is a totally original, unique and non-plagiarised platform for microblogging. Users who sign up for an account can publish ‘Chits’ – short, textual based posts of no more than 141 characters. Users can also follow their friends and peers to keep updated with what their friends are Chitting about.'
   contact:
@@ -9,37 +9,35 @@ info:
     email: 'ashley.williams@mmu.ac.uk'
 
 servers:
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/zedrem/Chittr/0.0.3
   - description: Local server
-    url: https://localhost:3333/api/v0.0.3
+    url: https://localhost:3333/api/v0.0.4
 
 paths:
   /user:
     post:
-      tags:
+      tags: 
       - User Management
       summary: 'Create an account'
       requestBody:
         content:
           application/json:
-            schema:
+            schema: 
               $ref: '#/components/schemas/PostUser'
       responses:
         201:
           description: 'OK'
         400:
           description: 'Bad request'
-
+  
   /login:
     post:
-      tags:
+      tags: 
       - User Management
       summary: 'Login to an account'
       requestBody:
         content:
           application/json:
-            schema:
+            schema: 
               $ref: '#/components/schemas/LoginUser'
       responses:
         200:
@@ -50,10 +48,10 @@ paths:
                 $ref: '#/components/schemas/LoginResponse'
         400:
           description: 'Invalid email/password supplied'
-
+  
   /logout:
     post:
-      tags:
+      tags: 
       - User Management
       summary: 'Logout of an account'
       security:
@@ -63,13 +61,13 @@ paths:
           description: 'OK'
         401:
           description: 'Unauthorised'
-
+          
   /user/{id}:
     get:
-      tags:
+      tags: 
       - User Management
       summary: 'View details of a single user'
-      parameters:
+      parameters: 
       - $ref: '#/components/parameters/id'
       responses:
         200:
@@ -87,7 +85,7 @@ paths:
       summary: 'Delete a users account'
       security:
       - User: []
-      parameters:
+      parameters: 
       - $ref: '#/components/parameters/id'
       responses:
         200:
@@ -102,7 +100,7 @@ paths:
       summary: 'Update a users account'
       security:
       - User: []
-      parameters:
+      parameters: 
       - $ref: '#/components/parameters/id'
       requestBody:
         content:
@@ -116,13 +114,13 @@ paths:
           description: 'Not found'
         401:
           description: 'Unauthorised'
-
+  
   /user/{id}/updatephoto:
     get:
       tags:
       - User Management
       summary: 'get a users account photo'
-      parameters:
+      parameters: 
       - $ref: '#/components/parameters/id'
       responses:
         200:
@@ -140,7 +138,7 @@ paths:
           description: 'Bad request'
         404:
           description: 'Not found'
-
+  
   /user/updatephoto:
     post:
       tags:
@@ -170,7 +168,7 @@ paths:
           description: 'Not found'
         401:
           description: 'Unauthorised'
-
+  
   /chits:
     get:
       tags:
@@ -197,7 +195,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ListChits'
     post:
-      tags:
+      tags: 
       - Posting Chits
       summary: 'Create a post'
       security:
@@ -212,13 +210,13 @@ paths:
           description: 'OK'
         401:
           description: 'Unauthorised'
-
+  
   /chits/{id}/photo:
     get:
       tags:
       - Posting Chits
-      summary: 'get a users account photo'
-      parameters:
+      summary: 'Get a chits photo'
+      parameters: 
       - $ref: '#/components/parameters/id'
       responses:
         200:
@@ -239,8 +237,8 @@ paths:
     post:
       tags:
       - Posting Chits
-      summary: 'Update a users account photo'
-      parameters:
+      summary: 'Upload a photo to a chit'
+      parameters: 
       - $ref: '#/components/parameters/id'
       security:
       - User: []
@@ -266,7 +264,7 @@ paths:
           description: 'Not found'
         401:
           description: 'Unauthorised'
-
+  
   /search_user:
     get:
       tags:
@@ -281,15 +279,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListUsers'
-
+  
   /user/{id}/follow:
     post:
-      tags:
+      tags: 
       - Follower Management
       summary: 'Follow a user with a specific ID'
       security:
       - User: []
-      parameters:
+      parameters: 
       - $ref: '#/components/parameters/id'
       responses:
         200:
@@ -299,12 +297,12 @@ paths:
         404:
           description: 'Not found'
     delete:
-      tags:
+      tags: 
       - Follower Management
       summary: 'Unfollow a user with a specific ID'
       security:
       - User: []
-      parameters:
+      parameters: 
       - $ref: '#/components/parameters/id'
       responses:
         200:
@@ -313,13 +311,13 @@ paths:
           description: 'Unauthorised'
         404:
           description: 'Not found'
-
+  
   /user/{id}/followers:
     get:
-      tags:
+      tags: 
       - Follower Management
       summary: 'View the list of followers for a user with a specific ID'
-      parameters:
+      parameters: 
       - $ref: '#/components/parameters/id'
       responses:
         200:
@@ -330,13 +328,13 @@ paths:
                 $ref: '#/components/schemas/ListUsers'
         404:
           description: 'Not found'
-
+  
   /user/{id}/following:
     get:
-      tags:
+      tags: 
       - Follower Management
       summary: 'View the list of users that a specific user is following'
-      parameters:
+      parameters: 
       - $ref: '#/components/parameters/id'
       responses:
         200:
@@ -347,16 +345,16 @@ paths:
                 $ref: '#/components/schemas/ListUsers'
         404:
           description: 'Not found'
-
+  
   /user/{id}/block:
     get:
       deprecated: true
-      tags:
+      tags: 
       - Follower Management
       summary: 'Block a user from following the logged in user'
       security:
       - User: []
-      parameters:
+      parameters: 
       - $ref: '#/components/parameters/id'
       responses:
         200:
@@ -365,7 +363,7 @@ paths:
           description: 'Unauthorised'
         404:
           description: 'Not found'
-
+     
   /chits/hashtagsearch:
     post:
       deprecated: true
@@ -381,14 +379,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListChits'
-
+  
   /chits/{hashtag}:
     get:
       deprecated: true
-      tags:
+      tags: 
       - Hashtagging
       summary: 'View Chits relating to a single hashtag'
-      parameters:
+      parameters: 
       - $ref: '#/components/parameters/hashtag'
       responses:
         200:
@@ -397,16 +395,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListChits'
-
+  
   /chits/{hashtag}/follow:
     post:
       deprecated: true
-      tags:
+      tags: 
       - Hashtagging
       summary: 'Follow a hashtag'
       security:
       - User: []
-      parameters:
+      parameters: 
       - $ref: '#/components/parameters/hashtag'
       responses:
         200:
@@ -415,16 +413,16 @@ paths:
           description: 'Unauthorised'
         404:
           description: 'Not found'
-
+    
   /chits/{hashtag}/unfollow:
     post:
       deprecated: true
-      tags:
+      tags: 
       - Hashtagging
       summary: 'Unfollow a hashtag'
       security:
       - User: []
-      parameters:
+      parameters: 
       - $ref: '#/components/parameters/hashtag'
       responses:
         200:
@@ -444,7 +442,7 @@ components:
       schema:
         type: integer
         format: int64
-
+    
     hashtag:
       name: hashtag
       in: path
@@ -453,7 +451,7 @@ components:
       schema:
         type: string
         format: string
-
+    
     q:
       name: q
       in: query
@@ -462,7 +460,7 @@ components:
       schema:
         type: string
         format: string
-
+    
     followid:
       name: followid
       in: query
@@ -471,9 +469,9 @@ components:
       schema:
         type: integer
         format: int64
-
+  
   schemas:
-
+  
     User:
       type: object
       properties:
@@ -513,7 +511,7 @@ components:
       required:
       - email
       - password
-
+    
     LoginResponse:
       type: object
       properties:
@@ -524,7 +522,7 @@ components:
         token:
           description: 'A token to be used to verify future calls'
           type: string
-
+    
     Location:
       type: object
       properties:
@@ -532,7 +530,7 @@ components:
           type: number
         latitude:
           type: number
-
+    
     SingleChit:
       type: object
       properties:
@@ -542,6 +540,8 @@ components:
           type: string
         location:
           $ref: '#/components/schemas/Location'
+        user: 
+          $ref: '#/components/schemas/ViewUser'
       required:
       - timestamp
       - chit_content
@@ -550,7 +550,7 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/SingleChit'
-
+    
     ViewUser:
       type: object
       properties:
@@ -562,7 +562,7 @@ components:
           type: string
         email:
           type: string
-
+    
     DetailedUser:
       type: object
       properties:
@@ -577,18 +577,18 @@ components:
         recent_chits:
           "$ref" : "#/components/schemas/ListChits"
 
-
+    
     ListUsers:
       type: array
       items:
         $ref: '#/components/schemas/ViewUser'
-
+  
   securitySchemes:
     User:
       type: apiKey
       name: X-Authorization
       in: header
-
+    
 tags:
   - name: User Management
     description: 'Endpoints concerned with a user managing their own account'
