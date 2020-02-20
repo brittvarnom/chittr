@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import { Text, View, FlatList, ActivityIndicator, Button, Alert, TextInput } from 'react-native';
 
+var signedIn = false;
+
+function displayLogin() {
+	return (
+		<Text>Hi test</Text>
+	);
+}
+
 class HelloWorldApp extends Component {
 
 	constructor (props) {
@@ -40,11 +48,8 @@ class HelloWorldApp extends Component {
 
 		return (
 			<View>
-				{/* {this.putItem()}
-				{this.addSeperator()}
-				{this.viewItems()}
-				{this.addSeperator()} */}
 				<Text>Test!</Text>
+				{displayLogin()}
 			</View >
 		);
 	}
