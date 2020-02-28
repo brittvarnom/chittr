@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, FlatList } from 'react-native';
 import { RNCamera } from 'react-native-camera';
+import Chit from './components/Chit';
 
 class Chittr extends Component {
 
@@ -8,7 +9,12 @@ class Chittr extends Component {
 		super(props);
 
 		this.state = {
-			chittrResponse: ['hi']
+			chittrResponse: [],
+			chit_id: '',
+			timestamp: '',
+			chit_content: '',
+			user: [],
+			location: ''
 		};
 	}
 
@@ -27,12 +33,13 @@ class Chittr extends Component {
 	// 	}
 	// }
 
-	getData() {
+	getLatestChits() {
 		return fetch('http://10.0.2.2:3333/api/v0.0.5/chits')
 			.then((response) => response.json())
 			.then((responseJson) => {
 				this.setState({
 					isLoading: false,
+					responseJ: responseJson,
 				});
 				console.log('TEST', responseJson);
 			})
@@ -40,9 +47,8 @@ class Chittr extends Component {
 				console.log(error);
 			});
 	}
-
 	componentDidMount() {
-		this.getData();
+		this.getLatestChits();
 	}
 
 	render() {
@@ -56,8 +62,13 @@ class Chittr extends Component {
 
 		return (
 			<View>
-				{/* logging out response in the render for testing purposes */}
-				<Text>{this.state.chittrResponse}</Text>
+				<FlatList
+					data={this.state.responseJ}
+					renderItem={({ item }) =>
+						<View>
+							<Chit item={item} />
+						</View>}
+					keyExtractor={({ id }, index) => id} />
 			</View >
 		);
 	}
