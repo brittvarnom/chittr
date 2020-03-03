@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, FlatList } from 'react-native';
-import { RNCamera } from 'react-native-camera';
 import Chit from './components/Chit';
 
 class Chittr extends Component {
@@ -17,21 +16,6 @@ class Chittr extends Component {
 			location: ''
 		};
 	}
-
-	//uncomment later, started putting in takePicture as reference
-	// takePicture = async () => {
-	// 	if (this.camera) {
-	// 		const options = { quality: 0.5, base64: true };
-	// 		const data = await this.camera.takePictureAsync(options);
-
-	// 		console.log(data.uri, this.state.token);
-
-	// 		return fetch("http://10.0.2.2.:3333/api/v0.0.5/user/photo", {
-	// 			method: 'POST',
-	// 			headers: []
-	// 		})
-	// 	}
-	// }
 
 	getLatestChits() {
 		return fetch('http://10.0.2.2:3333/api/v0.0.5/chits')
