@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Text, View, Alert, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import styles from '../styles/Styles';
+import fonts from '../styles/Font.styles';
 
 const spacing = styles.gelSpacingUnit;
+const fontSize = { pica: fonts.pica, canon: fonts.canon };
 
 export default class Chits extends Component {
     constructor (props) {
