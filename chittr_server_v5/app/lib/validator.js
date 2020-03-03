@@ -8,8 +8,8 @@
 
 const
     ZSchema = require('z-schema'),
-    schema = require('../../config/zedrem-Chittr-0.0.5-swagger.json'),
-    options = {assumeAdditional: true}, // ban additional properties and array items from the schema (no unexpected things)
+    schema = require('../../config/zedrem-Chittr-0.0.5-swagger.json.js'),
+    options = { assumeAdditional: true }, // ban additional properties and array items from the schema (no unexpected things)
     schemaValidator = new ZSchema(options),
     parameterValidator = require('swagger-parameters');
 
@@ -37,12 +37,12 @@ const validateId = id => {
  */
 const validateParameters = (actual, schema) => {
     return new Promise((resolve, reject) => {
-            let parse = parameterValidator(schema);
-    parse({query: actual}, (err, result) => {
-        if (err) return reject(err);
-    return resolve(result.query);
-})
-})
+        let parse = parameterValidator(schema);
+        parse({ query: actual }, (err, result) => {
+            if (err) return reject(err);
+            return resolve(result.query);
+        })
+    })
 
 };
 
@@ -53,7 +53,7 @@ const validateParameters = (actual, schema) => {
  * @param schemaPath    if supplied, sub-schema to be used for validation (passed directly to ZSchema schemaPath)
  */
 const validateSchema = (actual, schemaPath = 'definitions') => {
-    return schemaValidator.validate(actual, schema,  {schemaPath: schemaPath })
+    return schemaValidator.validate(actual, schema, { schemaPath: schemaPath })
 };
 
 const getLastErrors = () => schemaValidator.getLastErrors();
