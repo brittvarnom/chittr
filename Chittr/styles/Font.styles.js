@@ -43,6 +43,9 @@ export default StyleSheet.create({
 	minion: {
 		fontSize: 12,
 	},
+	bigTest: {
+		fontSize: 60,
+	}
 });
 
 // Example         Usage	                            Group A	    Group B	    Group C	    Group D
