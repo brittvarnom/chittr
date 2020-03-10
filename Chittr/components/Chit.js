@@ -12,6 +12,10 @@ export default class Chits extends Component {
         super(props);
     }
 
+    getLatitudeAndLongitude(location) {
+        return `${location.latitude}, ${location.longitude}`;
+    }
+
     render() {
         return (
             //Chit
@@ -32,11 +36,17 @@ export default class Chits extends Component {
                 <Text style={[fontSize.body, spacing]} onPress={() => { Alert.alert("test"); }}>
                     {this.props.item.chit_content}
                 </Text>
-                <View>
+                <View style={{ backgroundColor: '#f0f0f0' }}>
                     {/* Timestamp */}
-                    <Text style={[spacing, fontSize.brevier, { backgroundColor: '#f0f0f0' }]}>
+                    <Text style={[spacing, fontSize.brevier]}>
                         {Date(this.props.item.timesamp)}
                     </Text>
+                    {/* Location (If the chit has one) */}
+                    {this.props.item.location &&
+                        <Text style={[spacing, fontSize.brevier,]}>
+                            {this.getLatitudeAndLongitude(this.props.item.location)}
+                        </Text>
+                    }
                 </View>
             </View >);
     }

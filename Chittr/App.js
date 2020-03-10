@@ -113,11 +113,6 @@ class Chittr extends Component {
 			body: data
 		})
 			.then((response) => response.json())
-			.then((responseJson) => {
-				//sets login token and current user id
-				// this.setState({ user_id: responseJson.id, token: responseJson.token })
-				console.log('>>> POST CHIT SUCCESS', `Posted!`)
-			})
 			.catch((error) => {
 				console.error('>>> ERROR', error);
 			})
