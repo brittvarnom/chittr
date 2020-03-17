@@ -7,7 +7,7 @@ import fonts from '../styles/Font.styles';
 const spacing = styles.gelSpacingUnit;
 const fontSize = { pica: fonts.pica, body: fonts.bodyCopy, brevier: fonts.brevier };
 
-export default class Chits extends Component {
+export default class Chit extends Component {
     constructor (props) {
         super(props);
     }
@@ -52,4 +52,4 @@ export default class Chits extends Component {
     }
 }
 
-Chits.propTypes = { item: PropTypes.object.isRequired };
+Chit.propTypes = { item: PropTypes.object.isRequired, navigator: PropTypes.object.isRequired };
