@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { View, ActivityIndicator, FlatList, Button, Alert, ScrollView, Text } from 'react-native';
 import Feed from './components/Feed';
 import Chit from './components/Chit';
@@ -24,6 +25,8 @@ function DetailsScreen({ navigation }) {
 }
 
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
+
 
 const item = {
 	"chit_id": 1,
@@ -45,14 +48,14 @@ class Chittr extends Component {
 	render() {
 		return (
 			<NavigationContainer>
-				<Stack.Navigator initialRouteName="Login">
-					<Stack.Screen name="Feed" component={Feed} options={{ title: 'Latest Chits' }} />
-					<Stack.Screen name="Home" component={DetailsScreen} />
-					<Stack.Screen name="Login" component={Login} />
-					<Stack.Screen name="Chit">
+				<Drawer.Navigator initialRouteName="Feed">
+					<Drawer.Screen name="Home" component={Feed} options={{ title: 'Latest Chits' }} />
+					<Drawer.Screen name="Login" component={Login} />
+					<Drawer.Screen name="Chit Test">
 						{props => <Chit {...props} item={item} />}
-					</Stack.Screen>
-				</Stack.Navigator>
+					</Drawer.Screen>
+					<Drawer.Screen name="Details test" component={DetailsScreen} />
+				</Drawer.Navigator>
 			</NavigationContainer>
 		);
 	}
