@@ -8,6 +8,7 @@ import Feed from './components/Feed';
 import Chit from './components/Chit';
 import Login from './components/Login';
 import Register from './components/Register';
+import Compose from './components/Compose';
 
 function DetailsScreen({ navigation }) {
 	return (
@@ -93,6 +94,7 @@ class Chittr extends Component {
 					<Drawer.Screen name="Feed" component={StackNav} options={{ title: 'Latest Chits' }} />
 					<Drawer.Screen name="Login/Register" component={this.SignInRegister} />
 					<Drawer.Screen name="Register" component={Register} />
+					<Drawer.Screen name="New Chit" component={Compose} />
 					<Drawer.Screen name="Chit Test">
 						{props => <Chit {...props} item={item} />}
 					</Drawer.Screen>
