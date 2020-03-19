@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, ActivityIndicator, Button, AsyncStorage, Alert, TextInput, CheckBox, TouchableOpacity } from 'react-native';
-import Register from './Register';
 
 class Login extends Component {
 
@@ -32,54 +31,30 @@ class Login extends Component {
         }
     }
 
-    async postUserLogin(email, password) {
+    postUserRegister(gName, fName, email, password) {
         const data = JSON.stringify({
+            given_name: gName,
+            family_name: fName,
             email: email,
             password: password
         });
 
-        try {
-            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: data
-            });
-            const responseJson = await response.json();
-            //sets login token and current user id
-            this.setState({ user_id: responseJson.id, user_token: responseJson.token });
-            console.log('>>> LOGIN SUCCESS', `Logged in! User id: ${this.state.user_id}, Token: ${this.state.user_token}`);
-            this.setValueLocally();
-            console.log('>>>>>>>>>>>>>>>>', this.props.navigation)
-            this.props.navigation.goBack();
-        }
-        catch (error) {
-            this.setState({ loginMessage: 'Failed to log in, wrong email/password' });
-            console.log('>>> LOGIN FAILED', `Failed to login - wrong email/password. ${error}`);
-        }
-    }
-
-    async postUserLogout() {
-        console.log('LOGOUT DEBUG: TOKEN:', this.state.user_token);
-        try {
-            await fetch('http://10.0.2.2:3333/api/v0.0.5/logout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Authorization': this.state.user_token
-                }
-            });
-            this.deleteValueLocally();
-            this.props.navigation.goBack();
-        }
-        catch (error) {
-            this.deleteValueLocally();
-            this.setState({ loginMessage: `Failed to log out, ${error}` });
-            console.log('>>> LOGOUT ERROR: ', error);
-        }
-        this.setState({ user_token: null });
-        console.log('>>> LOGOUT ', `Logged out! Token: ${this.state.user_token}`);
+        return fetch('http://10.0.2.2:3333/api/v0.0.5/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: data
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                //sets login token and current user id
+                console.log('>>> REGISTER SUCCESS', `Account created! Account id: ${responseJson.id}`);
+            })
+            .catch((error) => {
+                this.setState({ loginMessage: 'Failed to register, fill all fields' });
+                console.log('>>> REGISTER FAILED: ', error);
+            })
     }
 
     componentDidMount() {
@@ -106,6 +81,17 @@ class Login extends Component {
         return (
             <View>
                 <TextInput
+                    autoCompleteType='name'
+                    onChangeText={(gName) => { this.setState({ gName }) }}
+                    placeholder='Given Name'
+                    style={{ width: 300 }}>
+                </TextInput>
+                <TextInput
+                    onChangeText={(fName) => { this.setState({ fName }) }}
+                    placeholder='Family Name'
+                    style={{ width: 300 }}>
+                </TextInput>
+                <TextInput
                     autoCompleteType='email'
                     onChangeText={(email) => { this.setState({ email }) }}
                     keyboardType='email-address'
@@ -119,10 +105,7 @@ class Login extends Component {
                     style={{ width: 300 }}
                     secureTextEntry={true}>
                 </TextInput>
-                <TouchableOpacity onPress={this.setValueLocally} activeOpacity={0.7}>
-                    <Text> Register </Text>
-                </TouchableOpacity>
-                <Button title='Login' style={{ margin: 8 }} onPress={() => { this.postUserLogin(this.state.email, this.state.password) }}></Button>
+                <Button title='Register' style={{ margin: 8 }} onPress={() => { this.postUserRegister(this.state.gName, this.state.fName, this.state.email, this.state.password) }}></Button>
                 <Text>{this.state.loginMessage}</Text>
             </View >
         );

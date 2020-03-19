@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ActivityIndicator, FlatList, Button, Alert, ScrollView, Text } from 'react-native';
+import { View, ActivityIndicator, FlatList, Button, Alert, ScrollView, Text, AsyncStorage } from 'react-native';
 import Chit from './Chit';
 
 class Feed extends Component {
@@ -14,8 +14,13 @@ class Feed extends Component {
             user: [],
             location: '',
             user_token: '',
-            user_id: ''
+            user_id: '',
         };
+    }
+
+    getValueLocally = () => {
+        AsyncStorage.getItem('@LOGIN_TOKEN').then((value) => this.setState({ user_token: value }));
+        console.log('TOKEN RETRIEVED: ', this.state.user_token);
     }
 
     getLatestChits() {
@@ -100,7 +105,7 @@ class Feed extends Component {
     postChit(token) {
         const data = JSON.stringify({
             timestamp: Date.now(),
-            chit_content: "test",
+            chit_content: "nNEW",
         });
 
         return fetch('http://10.0.2.2:3333/api/v0.0.5/chits', {
@@ -114,10 +119,14 @@ class Feed extends Component {
             .then((response) => response.json())
             .catch((error) => {
                 console.error('>>> ERROR', error);
+                Alert.alert("Please sign in first");
+
             })
     }
 
     componentDidMount() {
+        // AsyncStorage.clear();
+        this.getValueLocally();
         this.getLatestChits();
     }
 
@@ -148,6 +157,7 @@ class Feed extends Component {
                     title='Chit'
                     onPress={() => { console.log('>>> TOKEN', this.state.user_token); this.postChit(this.state.user_token) }}
                 />
+                <Text> {this.state.user_token} </Text>
                 {/* List rendering all chits */}
                 <FlatList
                     data={this.state.responseJ}
