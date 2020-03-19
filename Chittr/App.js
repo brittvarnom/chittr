@@ -10,22 +10,6 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Compose from './components/Compose';
 
-function DetailsScreen({ navigation }) {
-	return (
-		<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-			<Text>Details Screen</Text>
-			<Button
-				title="Go to Details... again"
-				onPress={() => navigation.push('Home')}
-			/>
-			<Button
-				title="Go back"
-				onPress={() => navigation.goBack()}
-			/>
-		</View>
-	);
-}
-
 function StackNav({ navigation }) {
 	return (
 		<Stack.Navigator initialRouteName="Feed">
@@ -93,12 +77,10 @@ class Chittr extends Component {
 				<Drawer.Navigator initialRouteName="Feed">
 					<Drawer.Screen name="Feed" component={StackNav} options={{ title: 'Latest Chits' }} />
 					<Drawer.Screen name="Login/Register" component={this.SignInRegister} />
-					<Drawer.Screen name="Register" component={Register} />
 					<Drawer.Screen name="New Chit" component={Compose} />
 					<Drawer.Screen name="Chit Test">
 						{props => <Chit {...props} item={item} />}
 					</Drawer.Screen>
-					<Drawer.Screen name="Details test" component={DetailsScreen} />
 				</Drawer.Navigator>
 			</NavigationContainer>
 		);

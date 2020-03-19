@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator, TextInput, Button, Alert, ScrollView, Text, AsyncStorage } from 'react-native';
-import Chit from './Chit';
 
 class Compose extends Component {
     constructor (props) {
@@ -15,40 +14,51 @@ class Compose extends Component {
             location: '',
             user_token: '',
             user_id: '',
-            content: ''
+            content: '',
+            draft: ''
         };
     }
 
-    postChit(timestamp, content) {
+    async postChit(timestamp, content) {
         const data = JSON.stringify({
             timestamp: timestamp,
             chit_content: content,
         });
 
-        return fetch('http://10.0.2.2:3333/api/v0.0.5/chits', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Authorization': this.state.user_token
-            },
-            body: data
-        })
-            .then((response) => {
-                response.json()
-                this.props.navigation.goBack();
-            })
-            .catch((error) => {
-                console.log('>>> ERROR', error);
-                Alert.alert("Couldn't post chit, please try again");
+        try {
+            const response = await fetch('http://10.0.2.2:3333/api/v0.0.5/chits', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Authorization': this.state.user_token
+                },
+                body: data
+            });
+            response.json();
+            this.props.navigation.goBack();
+        }
+        catch (error) {
+            console.log('>>> ERROR', error);
+            Alert.alert("Couldn't post chit, please try again");
+        }
+    }
 
-            })
+    setDraftValueLocally = (content) => {
+        AsyncStorage.setItem('@DRAFTS', content);
+        Alert.alert("Value stored successfully");
     }
 
     getValueLocally = () => {
         AsyncStorage.getItem('@LOGIN_TOKEN').then((value) => this.setState({ user_token: value }));
     }
 
+    getDraftValueLocally = () => {
+        AsyncStorage.getItem('@DRAFTS').then((value) => this.setState({ draft: value }));
+        console.log(">>>>>>>> DEBUG", this.state.draft);
+    }
+
     componentDidMount() {
+        this.getDraftValueLocally();
         this.getValueLocally();
     }
 
@@ -75,7 +85,11 @@ class Compose extends Component {
                     title='Chit'
                     onPress={() => { console.log('>>> TOKEN', this.state.user_token); this.postChit(Date.now(), this.state.content) }}
                 />
-                <Text>{this.state.loginMessage}</Text>
+                <Button
+                    title='Save as draft'
+                    onPress={() => { console.log('>>> TOKEN', this.state.user_token); this.setDraftValueLocally(this.state.content); console.log('>>> DRAFTS', this.state.drafts) }}
+                />
+                <Text>{this.state.draft}</Text>
             </View>
 
         )
