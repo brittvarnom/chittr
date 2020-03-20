@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, ActivityIndicator, Button, AsyncStorage, Alert, TextInput, CheckBox, TouchableOpacity } from 'react-native';
-import Register from './Register';
+import { Text, View, ActivityIndicator, Button, AsyncStorage, Alert, TextInput, TouchableOpacity } from 'react-native';
+import styles from '../styles/Styles';
+const spacing = styles.gelSpacingUnit;
 
 class Login extends Component {
 
@@ -16,7 +17,6 @@ class Login extends Component {
 
     setValueLocally = () => {
         AsyncStorage.setItem('@LOGIN_TOKEN', this.state.user_token);
-        Alert.alert("Value stored successfully");
     }
 
     getValueLocally = () => {
@@ -51,7 +51,6 @@ class Login extends Component {
             this.setState({ user_id: responseJson.id, user_token: responseJson.token });
             console.log('>>> LOGIN SUCCESS', `Logged in! User id: ${this.state.user_id}, Token: ${this.state.user_token}`);
             this.setValueLocally();
-            console.log('>>>>>>>>>>>>>>>>', this.props.navigation)
             this.props.navigation.goBack();
         }
         catch (error) {
@@ -61,7 +60,6 @@ class Login extends Component {
     }
 
     async postUserLogout() {
-        console.log('LOGOUT DEBUG: TOKEN:', this.state.user_token);
         try {
             await fetch('http://10.0.2.2:3333/api/v0.0.5/logout', {
                 method: 'POST',
@@ -70,14 +68,12 @@ class Login extends Component {
                     'X-Authorization': this.state.user_token
                 }
             });
-            this.deleteValueLocally();
-            this.props.navigation.goBack();
         }
         catch (error) {
-            this.deleteValueLocally();
-            this.setState({ loginMessage: `Failed to log out, ${error}` });
             console.log('>>> LOGOUT ERROR: ', error);
         }
+        this.props.navigation.goBack();
+        this.deleteValueLocally();
         this.setState({ user_token: null });
         console.log('>>> LOGOUT ', `Logged out! Token: ${this.state.user_token}`);
     }
@@ -97,32 +93,27 @@ class Login extends Component {
 
         if (this.state.user_token != "" && this.state.user_token != undefined) {
             console.log('DBUEGGGGG: ', this.state.user_token);
-            return <View>
-                <Text>You are already logged in :)</Text>
+            return <View styles={spacing, { backgroundColor: 'moccasin' }}>
+                <Text>Log out of your account:</Text>
                 <Button title='Log out' onPress={() => { this.postUserLogout(this.state.user_token) }} />
             </View>
         }
 
         return (
-            <View>
+            <View style={spacing, { alignItems: 'center' }}>
                 <TextInput
                     autoCompleteType='email'
                     onChangeText={(email) => { this.setState({ email }) }}
                     keyboardType='email-address'
                     placeholder='Email Address'
-                    style={{ width: 300 }}>
-                </TextInput>
+                    style={spacing, { width: 300, backgroundColor: 'moccasin' }} />
                 <TextInput
                     autoCompleteType='password'
                     onChangeText={(password) => { this.setState({ password }) }}
                     placeholder='Password'
-                    style={{ width: 300 }}
-                    secureTextEntry={true}>
-                </TextInput>
-                <TouchableOpacity onPress={this.setValueLocally} activeOpacity={0.7}>
-                    <Text> Register </Text>
-                </TouchableOpacity>
-                <Button title='Login' style={{ margin: 8 }} onPress={() => { this.postUserLogin(this.state.email, this.state.password) }}></Button>
+                    secureTextEntry={true}
+                    style={spacing, { width: 300, backgroundColor: 'moccasin' }} />
+                <Button title='Login' color="chocolate" style={{ margin: 8, width: 100 }} onPress={() => { this.postUserLogin(this.state.email, this.state.password) }}></Button>
                 <Text>{this.state.loginMessage}</Text>
             </View >
         );

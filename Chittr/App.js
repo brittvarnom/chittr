@@ -1,4 +1,4 @@
-import 'react-native-gesture-handler';
+// import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -10,7 +10,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Compose from './components/Compose';
 
-function StackNav({ navigation }) {
+function StackNav() {
 	return (
 		<Stack.Navigator initialRouteName="Feed">
 			<Stack.Screen name="Feed" component={Feed} options={{ title: 'Latest Chits' }} />
@@ -48,20 +48,6 @@ class Chittr extends Component {
 		};
 	}
 
-	SignInRegister({ navigation, }) {
-		return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-			<Text>Details Screen</Text>
-			<Button
-				title="Sign In"
-				onPress={() => navigation.navigate('Login')}
-			/>
-			<Button
-				title="Register"
-				onPress={() => navigation.navigate('Register')}
-			/>
-		</View>
-	}
-
 	getValueLocally = () => {
 		AsyncStorage.getItem('@LOGIN_TOKEN').then((value) => this.setState({ user_token: value }));
 		console.log('TOKEN RETRIEVED: ', this.state.user_token);
@@ -72,18 +58,29 @@ class Chittr extends Component {
 	}
 
 	render() {
-		return (
+		return (this.state.user_token ? (
 			<NavigationContainer>
-				<Drawer.Navigator initialRouteName="Feed">
+				<Drawer.Navigator initialRouteName="Feed" >
 					<Drawer.Screen name="Feed" component={StackNav} options={{ title: 'Latest Chits' }} />
-					<Drawer.Screen name="Login/Register" component={this.SignInRegister} />
+					<Drawer.Screen name="Logout" component={Login} />
 					<Drawer.Screen name="New Chit" component={Compose} />
 					<Drawer.Screen name="Chit Test">
 						{props => <Chit {...props} item={item} />}
 					</Drawer.Screen>
 				</Drawer.Navigator>
-			</NavigationContainer>
-		);
+			</NavigationContainer >
+		) : (
+				<NavigationContainer>
+					<Drawer.Navigator initialRouteName="Feed">
+						<Drawer.Screen name="Feed" component={StackNav} options={{ title: 'Latest Chits' }} />
+						<Drawer.Screen name="Login" component={Login} />
+						<Drawer.Screen name="Register" component={Register} />
+						<Drawer.Screen name="Chit Test">
+							{props => <Chit {...props} item={item} />}
+						</Drawer.Screen>
+					</Drawer.Navigator>
+				</NavigationContainer>
+			));
 	}
 }
 
