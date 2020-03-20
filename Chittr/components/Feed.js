@@ -142,7 +142,7 @@ class Feed extends Component {
         return (
             <View>
                 <Button
-                    title='Registerr'
+                    title='Register'
                     onPress={() => { this.postUserRegister() }}
                 />
                 <Button
