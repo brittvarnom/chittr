@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, ActivityIndicator, Button, AsyncStorage, Alert, TextInput, CheckBox, TouchableOpacity } from 'react-native';
-import Register from './Register';
 
 class Login extends Component {
 
@@ -14,18 +13,28 @@ class Login extends Component {
         };
     }
 
-    setValueLocally = () => {
+    setTokenLocally = () => {
         AsyncStorage.setItem('@LOGIN_TOKEN', this.state.user_token);
         Alert.alert("Value stored successfully");
     }
 
-    getValueLocally = () => {
+    getTokenLocally = () => {
         AsyncStorage.getItem('@LOGIN_TOKEN').then((value) => this.setState({ user_token: value }));
+    }
+
+    setUidLocally = () => {
+        AsyncStorage.setItem('@USER_ID', this.state.user_id.toString());
+        Alert.alert("Value stored successfully");
+    }
+
+    getUidLocally = () => {
+        AsyncStorage.getItem('@USER_ID').then((value) => this.setState({ user_id: value }));
     }
 
     deleteValueLocally = () => {
         try {
             AsyncStorage.removeItem('@LOGIN_TOKEN');
+            AsyncStorage.removeItem('@USER_ID');
         }
         catch (exception) {
             return;
@@ -50,7 +59,8 @@ class Login extends Component {
             //sets login token and current user id
             this.setState({ user_id: responseJson.id, user_token: responseJson.token });
             console.log('>>> LOGIN SUCCESS', `Logged in! User id: ${this.state.user_id}, Token: ${this.state.user_token}`);
-            this.setValueLocally();
+            this.setTokenLocally();
+            this.setUidLocally();
             console.log('>>>>>>>>>>>>>>>>', this.props.navigation)
             this.props.navigation.goBack();
         }
@@ -83,7 +93,8 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        this.getValueLocally();
+        this.getTokenLocally();
+        this.getUidLocally();
     }
 
     render() {
@@ -119,9 +130,6 @@ class Login extends Component {
                     style={{ width: 300 }}
                     secureTextEntry={true}>
                 </TextInput>
-                <TouchableOpacity onPress={this.setValueLocally} activeOpacity={0.7}>
-                    <Text> Register </Text>
-                </TouchableOpacity>
                 <Button title='Login' style={{ margin: 8 }} onPress={() => { this.postUserLogin(this.state.email, this.state.password) }}></Button>
                 <Text>{this.state.loginMessage}</Text>
             </View >

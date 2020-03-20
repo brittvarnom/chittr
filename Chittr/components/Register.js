@@ -18,7 +18,7 @@ class Login extends Component {
         Alert.alert("Value stored successfully");
     }
 
-    getValueLocally = () => {
+    getTokenlocally = () => {
         AsyncStorage.getItem('@LOGIN_TOKEN').then((value) => this.setState({ user_token: value }));
     }
 
@@ -58,7 +58,7 @@ class Login extends Component {
     }
 
     componentDidMount() {
-        this.getValueLocally();
+        this.getTokenlocally();
     }
 
     render() {

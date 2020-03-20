@@ -18,9 +18,14 @@ class Feed extends Component {
         };
     }
 
-    getValueLocally = () => {
+    getTokenLocally = () => {
         AsyncStorage.getItem('@LOGIN_TOKEN').then((value) => this.setState({ user_token: value }));
         console.log('TOKEN RETRIEVED: ', this.state.user_token);
+    }
+
+    getUidLocally = () => {
+        AsyncStorage.getItem('@USER_ID').then((value) => this.setState({ user_id: value }));
+        console.log('TOKEN RETRIEVED: ', this.state.user_id);
     }
 
     getLatestChits() {
@@ -126,7 +131,8 @@ class Feed extends Component {
 
     componentDidMount() {
         // AsyncStorage.clear();
-        this.getValueLocally();
+        this.getTokenLocally();
+        this.getUidLocally();
         this.getLatestChits();
     }
 
@@ -158,6 +164,7 @@ class Feed extends Component {
                     onPress={() => { console.log('>>> TOKEN', this.state.user_token); this.postChit(this.state.user_token) }}
                 />
                 <Text> {this.state.user_token} </Text>
+                <Text> {this.state.user_id} </Text>
                 {/* List rendering all chits */}
                 <FlatList
                     data={this.state.responseJ}

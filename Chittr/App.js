@@ -77,13 +77,13 @@ class Chittr extends Component {
 		</View>
 	}
 
-	getValueLocally = () => {
+	getTokenlocally = () => {
 		AsyncStorage.getItem('@LOGIN_TOKEN').then((value) => this.setState({ user_token: value }));
 		console.log('TOKEN RETRIEVED: ', this.state.user_token);
 	}
 
 	componentDidMount() {
-		this.getValueLocally();
+		this.getTokenlocally();
 	}
 
 	render() {
@@ -92,7 +92,6 @@ class Chittr extends Component {
 				<Drawer.Navigator initialRouteName="Feed">
 					<Drawer.Screen name="Feed" component={StackNav} options={{ title: 'Latest Chits' }} />
 					<Drawer.Screen name="Login/Register" component={this.SignInRegister} />
-					<Drawer.Screen name="Register" component={Register} />
 					<Drawer.Screen name="Chit Test">
 						{props => <Chit {...props} item={item} />}
 					</Drawer.Screen>
