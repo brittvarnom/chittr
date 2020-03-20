@@ -1,58 +1,90 @@
+import 'react-native-gesture-handler';
 import React, { Component } from 'react';
-import { Text, View, FlatList, ActivityIndicator, Button, Alert, TextInput } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { View, Button, Text, AsyncStorage } from 'react-native';
+import Feed from './components/Feed';
+import Chit from './components/Chit';
+import Login from './components/Login';
+import Register from './components/Register';
+import Compose from './components/Compose';
 
-var signedIn = false;
-
-function displayLogin() {
+function StackNav({ navigation }) {
 	return (
-		<Text>Hi test</Text>
+		<Stack.Navigator initialRouteName="Feed">
+			<Stack.Screen name="Feed" component={Feed} options={{ title: 'Latest Chits' }} />
+			<Stack.Screen name="Register" component={Register} options={{ title: 'Create New Account' }} />
+			<Stack.Screen name="Login" component={Login} options={{ title: 'Sign In' }} />
+		</Stack.Navigator>
 	);
 }
 
-class HelloWorldApp extends Component {
+const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
+const item = {
+	"chit_id": 1,
+	"timestamp": 1571491140000,
+	"chit_content": "Having lunch with Turing!",
+	"user": {
+		"user_id": 1,
+		"given_name": "Emmachanged",
+		"family_name": "Smith Changed",
+		"email": "emma.smith@example.com"
+	},
+	"location": {
+		"longitude": -2.240027,
+		"latitude": 53.476445
+	}
+}
+
+class Chittr extends Component {
 	constructor (props) {
 		super(props);
 
 		this.state = {
-
+			user_token: ''
 		};
 	}
 
-	// getData() {
-	// 	return fetch('http://10.0.2.2:3333/list/')
-	// 		.then((response) => response.json())
-	// 		.then((responseJson) => {
-	// 			this.setState({
-	// 				isLoading: false,
-	// 				shoppingListData: responseJson,
-	// 			});
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log(error);
-	// 		});
-	// }
+	SignInRegister({ navigation, }) {
+		return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+			<Text>Details Screen</Text>
+			<Button
+				title="Sign In"
+				onPress={() => navigation.navigate('Login')}
+			/>
+			<Button
+				title="Register"
+				onPress={() => navigation.navigate('Register')}
+			/>
+		</View>
+	}
+
+	getValueLocally = () => {
+		AsyncStorage.getItem('@LOGIN_TOKEN').then((value) => this.setState({ user_token: value }));
+		console.log('TOKEN RETRIEVED: ', this.state.user_token);
+	}
 
 	componentDidMount() {
-		// this.getData();
+		this.getValueLocally();
 	}
 
 	render() {
-		if (this.state.isLoading) {
-			return (
-				<View>
-					<ActivityIndicator />
-				</View>
-			)
-		}
-
 		return (
-			<View>
-				<Text>Test!</Text>
-				{displayLogin()}
-			</View >
+			<NavigationContainer>
+				<Drawer.Navigator initialRouteName="Feed">
+					<Drawer.Screen name="Feed" component={StackNav} options={{ title: 'Latest Chits' }} />
+					<Drawer.Screen name="Login/Register" component={this.SignInRegister} />
+					<Drawer.Screen name="New Chit" component={Compose} />
+					<Drawer.Screen name="Chit Test">
+						{props => <Chit {...props} item={item} />}
+					</Drawer.Screen>
+				</Drawer.Navigator>
+			</NavigationContainer>
 		);
 	}
 }
 
-export default HelloWorldApp
+export default Chittr;

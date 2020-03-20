@@ -1,9 +1,8 @@
 # OSX
 #
 .DS_Store
-.zip
-.pptx
-chittr_server_v2/
+*.zip
+chittr_server_v5/
 
 # Xcode
 #
