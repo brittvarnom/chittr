@@ -17,15 +17,16 @@ export default class Chit extends Component {
     }
 
     render() {
+        const url = `http://localhost:3333/api/v0.0.5/user/${this.props.item.user.user_id}/photo`;
         return (
             //Chit
-            <View>
+            <View style={{ backgroundColor: 'white', marginBottom: 8 }}>
                 {/* User's info */}
                 <View style={spacing, { flexDirection: 'row', backgroundColor: 'moccasin' }}>
                     {/* Profile pic */}
                     <Image
                         style={{ height: 50, width: 50 }}
-                        source={require('../assets/chick_icon.png')}
+                        source={url}
                     />
                     {/* Username */}
                     <Text style={[fontSize.pica, spacing]} onPress={() => { Alert.alert("test"); }}>
