@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({
-    gelSpacingUnit: {
-        margin: 8,
-    }
-});
+  gelSpacingUnit: {
+    margin: 8
+  }
+})
