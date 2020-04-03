@@ -9,6 +9,8 @@ import {
   Text,
   AsyncStorage
 } from 'react-native'
+import styles from '../styles/Styles'
+const spacing = styles.gelSpacingUnit
 
 class Compose extends Component {
   constructor (props) {
@@ -95,6 +97,8 @@ class Compose extends Component {
         />
         <Button
           title='Chit'
+          color='chocolate'
+          style={spacing}
           onPress={() => {
             console.log('>>> TOKEN', this.state.user_token)
             this.postChit(Date.now(), this.state.content)
@@ -102,6 +106,8 @@ class Compose extends Component {
         />
         <Button
           title='Save as draft'
+          color='chocolate'
+          style={spacing}
           onPress={() => {
             console.log('>>> TOKEN', this.state.user_token)
             this.setDraftValueLocally(this.state.content)
