@@ -1,19 +1,19 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import Feed from './Feed';
+import React from 'react'
+import { shallow } from 'enzyme'
+import Feed from './Feed'
 
 describe('OrderingPracticeContainer', () => {
-    describe('component', () => {
-        let wrapper;
+  describe('component', () => {
+    let wrapper
 
-        beforeEach(() => {
-            wrapper = shallow(<Feed />);
-        });
+    beforeEach(() => {
+      wrapper = shallow(<Feed />)
+    })
 
-        it('should render the Drag and Drop context provider', () => {
-            const flatlist = wrapper.find('Flatlist');
+    it('should render the Drag and Drop context provider', () => {
+      const flatlist = wrapper.find('Flatlist')
 
-            expect(flatlist).toExist();
-        });
-    });
-});
+      expect(flatlist).toExist()
+    })
+  })
+})
